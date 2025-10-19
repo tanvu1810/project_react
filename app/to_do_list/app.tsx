@@ -1,8 +1,16 @@
 import { useState, useEffect } from "react";
+
+// Để tránh kieu any thì nên tạo kiểu dữ liệu riêng
+type Todo = { id: string; name?: string };
+
+const getId = (it: Todo) => String(it.id);
+
 export function App() {
-  const [listItem, setList] = useState<any[]>([]);
+  const [listItem, setList] = useState<Todo[]>([]);
   const [item, setItem] = useState("");
+
   const [editText, setEditText] = useState("");
+  const [editingId, setEditingId] = useState<string | number | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,7 +22,8 @@ export function App() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const jsonData = await response.json();
-        setList(jsonData);
+        // setList(jsonData);
+        setList(Array.isArray(jsonData) ? jsonData : (jsonData.data ?? []));
       } catch (error) {
         console.error(error);
       }
@@ -58,7 +67,7 @@ export function App() {
   };
 
   // Xoa item
-  const delItem = async (id: number | string) => {
+  const delItem = async (id: string) => {
     try {
       const response = await fetch(
         `https://training-iota-azure.vercel.app/api/task?id=${id}`,
@@ -68,22 +77,34 @@ export function App() {
       );
       if (!response.ok) throw new Error(`DELETE failed: ${response.status}`);
       console.log(`Item ${id} deleted successfully.`);
-      setList((prev) => prev.filter((item) => (item.id ?? item._id) !== id));
+      setList((prev) => prev.filter((item) => String(item.id) !== String(id)));
     } catch (error) {
       console.error("Error deleting item:", error);
     }
   };
 
+  // Sua khi nhan vao text
+  const startEdit = (item: Todo) => {
+    setEditingId(item.id);
+    setEditText(item.name ?? "");
+  };
+
+  // Huỷ sửa
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditText("");
+  };
+
   // Sua item
-  const updateItem = async (id: string | number) => {
-    if (!item.trim()) return;
+  const updateItem = async (id: string) => {
+    if (!editText.trim()) return;
     try {
       const response = await fetch(
-        `https://training-iota-azure.vercel.app/api/task?id=${id}`,
+        `https://training-iota-azure.vercel.app/api/task`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: editText }),
+          body: JSON.stringify({ id, name: editText.trim() }),
         }
       );
 
@@ -91,12 +112,14 @@ export function App() {
         const text = await response.text();
         throw new Error(`PUT failed: ${response.status} ${text}`);
       }
+
       setList((preList) =>
-        preList.map((item) => {
-          item.id === id ? { ...item, name: editText } : item;
-        })
+        preList.map((it) =>
+          String(it.id) === String(id) ? { ...it, name: editText.trim() } : it
+        )
       );
 
+      setEditingId(null);
       setEditText("");
     } catch (error) {
       console.error(error);
@@ -162,34 +185,70 @@ export function App() {
             </p>
           ) : (
             <ul className="space-y-3">
-              {listItem.map((item) => {
+              {listItem.map((it) => {
+                const rowId = getId(it);
+                const isEditing = String(editingId) === rowId;
+
                 return (
                   <li
-                    key={item.id}
+                    key={rowId}
                     className="flex justify-between items-center bg-purple-50 px-4 py-2 rounded-lg shadow-sm hover:bg-purple-100 transition"
                   >
-                    <span className="text-gray-800 font-medium">
-                      {item.name ?? JSON.stringify(item)}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        delItem(item.id);
-                      }}
-                      className="border border-red-500 text-white bg-orange-400 hover:bg-red-600 px-3 py-1 rounded-lg text-sm font-semibold transition"
+                    {/* Wrapper nhận click để bật edit */}
+                    <div
+                      className="flex-1 mr-3 cursor-text"
+                      onClick={() => !isEditing && startEdit(it)}
+                      title={!isEditing ? "Click để sửa" : ""}
                     >
-                      Delete
-                    </button>
-                    <button
-                      type="button"
-                      disabled={item}
-                      onClick={() => {
-                        updateItem(item.id);
-                      }}
-                      className="border border-orange-500 text-white bg-blue-400 hover:bg-green-500 px-3 py-1 rounded-lg text-sm font-semibold transition"
-                    >
-                      Update
-                    </button>
+                      <input
+                        type="text"
+                        value={isEditing ? editText : (it.name ?? "")}
+                        onChange={(e) => setEditText(e.target.value)}
+                        disabled={!isEditing} // vẫn dùng disabled như bạn muốn
+                        readOnly={!isEditing}
+                        autoFocus={isEditing} // vào edit là focus luôn
+                        className={`w-full rounded-lg px-3 py-2 transition
+              ${
+                isEditing
+                  ? "bg-white border border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                  : "bg-transparent border border-transparent text-gray-800 font-medium pointer-events-none select-none"
+              }`}
+                        onKeyDown={(e) => {
+                          if (isEditing && e.key === "Enter") updateItem(it.id);
+                          // if (isEditing && e.key === "Enter") updateItem(rowId);
+                          if (isEditing && e.key === "Escape") cancelEdit();
+                        }}
+                      />
+                    </div>
+
+                    {/* Nút đổi Delete ↔ Update */}
+                    {isEditing ? (
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={() => updateItem(rowId)}
+                          // onClick={() => updateItem(it.id)}
+                          className="px-3 py-1 rounded-lg text-white font-semibold bg-green-500 hover:bg-green-600 transition"
+                        >
+                          Update
+                        </button>
+                        <button
+                          type="button"
+                          onClick={cancelEdit}
+                          className="px-3 py-1 rounded-lg text-gray-700 font-semibold bg-gray-200 hover:bg-gray-300 transition"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => delItem(rowId)}
+                        className="px-3 py-1 rounded-lg text-white font-semibold bg-orange-500 hover:bg-orange-600 transition"
+                      >
+                        Delete
+                      </button>
+                    )}
                   </li>
                 );
               })}
