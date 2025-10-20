@@ -14,10 +14,9 @@ export function App() {
 
   useEffect(() => {
     const fetchData = async () => {
+      const URL = "https://training-iota-azure.vercel.app/api/task";
       try {
-        const response = await fetch(
-          "https://training-iota-azure.vercel.app/api/task"
-        );
+        const response = await fetch(`${URL}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -33,53 +32,55 @@ export function App() {
 
   // Them item
   const addItem = async () => {
-    if (!item.trim()) return;
+    const todo = item.trim();
+    const URL = "https://training-iota-azure.vercel.app/api/task";
+    if (!todo) return;
     try {
-      const response = await fetch(
-        "https://training-iota-azure.vercel.app/api/task",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: item.trim() }),
-        }
-      );
+      const response = await fetch(`${URL}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: todo }),
+      });
 
       if (!response.ok) {
         const text = await response.text();
         throw new Error(`POST failed: ${response.status} ${text}`);
       }
       const data = await response.json();
+      // Them item vua tao vao danh sach todoList
+      setList((prevList) => [...prevList, data]);
 
       // Nếu trả về item vừa tạo:
+      /*
       const created = Array.isArray(data) ? null : (data.data ?? data);
       if (created && !Array.isArray(created)) {
-        setList((prev) => [...prev, created]);
+        setList((prevList) => [...prevList, created]);
       } else {
         // Nếu trả về cả danh sách
         setList(Array.isArray(data) ? data : (data.data ?? []));
       }
+      */
       setItem("");
       console.log(`Item ${item} added successfully.`);
     } catch (error) {
-      console.error(error);
-      alert("Them that bai ");
+      console.error("Error addt item: ", error);
+      alert("Them that bai!");
     }
   };
 
   // Xoa item
   const delItem = async (id: string) => {
+    const URL = "https://training-iota-azure.vercel.app/api/task";
     try {
-      const response = await fetch(
-        `https://training-iota-azure.vercel.app/api/task?id=${id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const response = await fetch(`${URL}?id=${id}`, {
+        method: "DELETE",
+      });
       if (!response.ok) throw new Error(`DELETE failed: ${response.status}`);
       console.log(`Item ${id} deleted successfully.`);
       setList((prev) => prev.filter((item) => String(item.id) !== String(id)));
     } catch (error) {
       console.error("Error deleting item:", error);
+      alert("Xoa that bai!");
     }
   };
 
@@ -97,16 +98,15 @@ export function App() {
 
   // Sua item
   const updateItem = async (id: string) => {
-    if (!editText.trim()) return;
+    const todo = editText.trim();
+    const URL = "https://training-iota-azure.vercel.app/api/task";
+    if (!todo) return;
     try {
-      const response = await fetch(
-        `https://training-iota-azure.vercel.app/api/task`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id, name: editText.trim() }),
-        }
-      );
+      const response = await fetch(`${URL}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, name: todo }),
+      });
 
       if (!response.ok) {
         const text = await response.text();
@@ -115,15 +115,15 @@ export function App() {
 
       setList((preList) =>
         preList.map((it) =>
-          String(it.id) === String(id) ? { ...it, name: editText.trim() } : it
+          String(it.id) === String(id) ? { ...it, name: todo } : it
         )
       );
 
       setEditingId(null);
       setEditText("");
     } catch (error) {
-      console.error(error);
-      alert("Sua that bai ");
+      console.error("Sua that bai", error);
+      alert("Sua that bai!");
     }
   };
   // const addItem = () => {
@@ -204,9 +204,9 @@ export function App() {
                         type="text"
                         value={isEditing ? editText : (it.name ?? "")}
                         onChange={(e) => setEditText(e.target.value)}
-                        disabled={!isEditing} // vẫn dùng disabled như bạn muốn
+                        disabled={!isEditing}
                         readOnly={!isEditing}
-                        autoFocus={isEditing} // vào edit là focus luôn
+                        autoFocus={isEditing}
                         className={`w-full rounded-lg px-3 py-2 transition
               ${
                 isEditing
@@ -214,8 +214,8 @@ export function App() {
                   : "bg-transparent border border-transparent text-gray-800 font-medium pointer-events-none select-none"
               }`}
                         onKeyDown={(e) => {
-                          if (isEditing && e.key === "Enter") updateItem(it.id);
-                          // if (isEditing && e.key === "Enter") updateItem(rowId);
+                          // if (isEditing && e.key === "Enter") updateItem(it.id);
+                          if (isEditing && e.key === "Enter") updateItem(rowId);
                           if (isEditing && e.key === "Escape") cancelEdit();
                         }}
                       />
