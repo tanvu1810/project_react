@@ -187,7 +187,7 @@ export function App() {
             <ul className="space-y-3">
               {listItem.map((it) => {
                 const rowId = getId(it);
-                const isEditing = String(editingId) === rowId;
+                const isEditing = String(editingId) === String(it.id);
 
                 return (
                   <li
@@ -214,8 +214,8 @@ export function App() {
                   : "bg-transparent border border-transparent text-gray-800 font-medium pointer-events-none select-none"
               }`}
                         onKeyDown={(e) => {
-                          // if (isEditing && e.key === "Enter") updateItem(it.id);
-                          if (isEditing && e.key === "Enter") updateItem(rowId);
+                          if (isEditing && e.key === "Enter") updateItem(it.id);
+                          // if (isEditing && e.key === "Enter") updateItem(rowId);
                           if (isEditing && e.key === "Escape") cancelEdit();
                         }}
                       />
@@ -226,8 +226,8 @@ export function App() {
                       <div className="flex gap-2">
                         <button
                           type="button"
-                          onClick={() => updateItem(rowId)}
-                          // onClick={() => updateItem(it.id)}
+                          // onClick={() => updateItem(rowId)}
+                          onClick={() => updateItem(String(it.id))}
                           className="px-3 py-1 rounded-lg text-white font-semibold bg-green-500 hover:bg-green-600 transition"
                         >
                           Update
