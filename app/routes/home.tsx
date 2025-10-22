@@ -3,7 +3,8 @@ import { Welcome } from "../welcome/welcome";
 import { Test } from "../testUseState/test";
 import { Counter } from "../testUseEffect/test";
 // import { App } from "~/to_do_list/app";
-import { HomePage } from "../to_do_list/HomePage";
+// import { HomePage } from "../to_do_list/useProps/HomePage";
+import HomePage from "~/to_do_list/useZuStand/HomePage";
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "New React Router App" },
