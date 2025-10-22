@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 
 // Để tránh kieu any thì nên tạo kiểu dữ liệu riêng
 type Todo = { id: string; name?: string };
+// interface Todo {
+//   id: string;
+//   name?: string;
+// }
 
 const getId = (it: Todo) => String(it.id);
 
@@ -140,7 +144,7 @@ export function App() {
   // const delItem = (index) => {
   //   setList((preList) => [preList.filter((item) => item.id !== id)]);
   // };
-
+  console.log(listItem);
   return (
     <>
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-purple-100 to-blue-100 p-4">
@@ -187,7 +191,7 @@ export function App() {
             <ul className="space-y-3">
               {listItem.map((it) => {
                 const rowId = getId(it);
-                const isEditing = String(editingId) === String(it.id);
+                const isEditing = String(editingId) === rowId;
 
                 return (
                   <li
@@ -226,8 +230,8 @@ export function App() {
                       <div className="flex gap-2">
                         <button
                           type="button"
-                          // onClick={() => updateItem(rowId)}
-                          onClick={() => updateItem(String(it.id))}
+                          onClick={() => updateItem(rowId)}
+                          // onClick={() => updateItem(String(it.id))}
                           className="px-3 py-1 rounded-lg text-white font-semibold bg-green-500 hover:bg-green-600 transition"
                         >
                           Update
