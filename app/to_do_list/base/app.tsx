@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-
 // Để tránh kieu any thì nên tạo kiểu dữ liệu riêng
-type Todo = { id: string; name?: string };
+type Todo = { id: string | number; name?: string };
 // interface Todo {
-//   id: string;
+//   id: number;
 //   name?: string;
 // }
 
@@ -88,18 +87,6 @@ export function App() {
     }
   };
 
-  // Sua khi nhan vao text
-  const startEdit = (item: Todo) => {
-    setEditingId(item.id);
-    setEditText(item.name ?? "");
-  };
-
-  // Huỷ sửa
-  const cancelEdit = () => {
-    setEditingId(null);
-    setEditText("");
-  };
-
   // Sua item
   const updateItem = async (id: string) => {
     const todo = editText.trim();
@@ -144,6 +131,19 @@ export function App() {
   // const delItem = (index) => {
   //   setList((preList) => [preList.filter((item) => item.id !== id)]);
   // };
+
+  // Sua khi nhan vao text
+  const startEdit = (item: Todo) => {
+    setEditingId(item.id);
+    setEditText(item.name ?? "");
+  };
+
+  // Huỷ sửa
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditText("");
+  };
+
   console.log(listItem);
   return (
     <>
@@ -218,8 +218,8 @@ export function App() {
                   : "bg-transparent border border-transparent text-gray-800 font-medium pointer-events-none select-none"
               }`}
                         onKeyDown={(e) => {
-                          if (isEditing && e.key === "Enter") updateItem(it.id);
-                          // if (isEditing && e.key === "Enter") updateItem(rowId);
+                          // if (isEditing && e.key === "Enter") updateItem(it.id);
+                          if (isEditing && e.key === "Enter") updateItem(rowId);
                           if (isEditing && e.key === "Escape") cancelEdit();
                         }}
                       />
