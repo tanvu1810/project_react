@@ -15,7 +15,7 @@ export const fetchData = async (): Promise<ToDo[]> => {
 };
 
 // Add ToDoItem
-export const addToDoItem = async (name: string): Promise<ToDo | ToDo[]> => {
+export const addToDoItem = async (name: string): Promise<ToDo> => {
   const response = await fetch(BASE_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -30,7 +30,7 @@ export const addToDoItem = async (name: string): Promise<ToDo | ToDo[]> => {
 
 // Update ToDoItem
 export const updateToDoItem = async (
-  id: string | number,
+  id: string,
   name: string
 ): Promise<void> => {
   const response = await fetch(BASE_URL, {
@@ -45,7 +45,7 @@ export const updateToDoItem = async (
 };
 
 // Delete ToDoItem
-export const delToDoItem = async (id: string | number): Promise<void> => {
+export const delToDoItem = async (id: string): Promise<void> => {
   const response = await fetch(`${BASE_URL}?id=${id}`, {
     method: "DELETE",
   });

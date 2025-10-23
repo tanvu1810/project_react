@@ -1,7 +1,7 @@
 export type ToDo = {
-  id: string | number;
+  id: string;
   name?: string;
 };
 
-export const getId = (item: ToDo) => String(item.id);
-export const normalizeId = (id: string | number) => String(id);
+// export const getId = (item: ToDo) => String(item.id);
+export const normalizeId = (id: string) => String(id);

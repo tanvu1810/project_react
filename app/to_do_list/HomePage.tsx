@@ -9,7 +9,7 @@ import { fetchData, addToDoItem, updateToDoItem, delToDoItem } from "./api/api";
 
 export default function HomePage() {
   const [list, setList] = useState<ToDo[]>([]);
-  const [item, setItem] = useState("");
+
   const [editText, setEditText] = useState("");
   const [editingId, setEditingId] = useState<string | number | null>(null);
 
@@ -31,16 +31,8 @@ export default function HomePage() {
   const itemAdd = async (name: string) => {
     try {
       const data = await addToDoItem(name);
+      setList((prev) => [...prev, data]);
 
-      const created = Array.isArray(data)
-        ? null
-        : ((data as any)?.data ?? data);
-      if (created && !Array.isArray(created)) {
-        setList((prev) => [...prev, created as ToDo]);
-      } else {
-        setList(Array.isArray(data) ? data : ((data as any)?.data ?? []));
-      }
-      setItem("");
       console.log(`Item ${name} added successfully.`);
     } catch (error) {
       console.error("Error add item: ", error);
@@ -59,15 +51,13 @@ export default function HomePage() {
   };
 
   // Update Item
-  const itemUpdate = async (id: string | number) => {
+  const itemUpdate = async (id: string) => {
     const next = editText.trim();
     if (!next) return;
     try {
       await updateToDoItem(id, next);
       setList((prev) =>
-        prev.map((item) =>
-          String(item.id) === String(id) ? { ...item, name: next } : item
-        )
+        prev.map((item) => (item.id === id ? { ...item, name: next } : item))
       );
       setEditingId(null);
       setEditText("");
@@ -78,12 +68,10 @@ export default function HomePage() {
   };
 
   // Delete Item
-  const itemDelete = async (id: string | number) => {
+  const itemDelete = async (id: string) => {
     try {
-      await delToDoItem(String(id));
-      setList((preList) =>
-        preList.filter((item) => String(item.id) !== String(id))
-      );
+      await delToDoItem(id);
+      setList((preList) => preList.filter((item) => item.id !== id));
     } catch (error) {
       console.error("Error deleting item:", error);
       alert("Xoa that bai!");
