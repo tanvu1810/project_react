@@ -6,6 +6,7 @@ import { Counter } from "../testUseEffect/test";
 import { App } from "~/to_do_list/base/app";
 import { Caculator } from "~/testRustand/app";
 import HomePage from "~/to_do_list/HomePage";
+
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "New React Router App" },
@@ -19,7 +20,6 @@ export default function Home() {
       {/* <Welcome /> */}
       {/* <Test /> */}
       {/* <Counter /> */}
-      {/* <Caculator /> */}
       {/* <App /> */}
       <HomePage />
     </>
