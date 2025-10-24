@@ -9,7 +9,6 @@ import { fetchData, addToDoItem, updateToDoItem, delToDoItem } from "./api/api";
 
 export default function HomePage() {
   const [list, setList] = useState<ToDo[]>([]);
-
   const [editText, setEditText] = useState("");
   const [editingId, setEditingId] = useState<string | number | null>(null);
 
@@ -24,7 +23,7 @@ export default function HomePage() {
         console.error(error);
       }
     })();
-    return () => controller.abort();
+    return () => controller.abort(); // Có settimeOut hủy request fetch api
   }, []);
 
   // Add Item
@@ -32,7 +31,6 @@ export default function HomePage() {
     try {
       const data = await addToDoItem(name);
       setList((prev) => [...prev, data]);
-
       console.log(`Item ${name} added successfully.`);
     } catch (error) {
       console.error("Error add item: ", error);

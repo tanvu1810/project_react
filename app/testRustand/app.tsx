@@ -9,14 +9,14 @@ export function Caculator() {
       <h2>Count: {count}</h2>
       <button
         onClick={() => {
-          increment;
+          increment(count);
         }}
       >
         +
       </button>
       <button
         onClick={() => {
-          decrement;
+          decrement(count);
         }}
       >
         -

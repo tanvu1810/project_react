@@ -4,4 +4,4 @@ export type ToDo = {
 };
 
 // export const getId = (item: ToDo) => String(item.id);
-export const normalizeId = (id: string) => String(id);
+export const normalizeId = (id: string | number) => String(id);
