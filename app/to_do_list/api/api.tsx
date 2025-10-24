@@ -11,7 +11,7 @@ export const fetchData = async (): Promise<ToDo[]> => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const jsonData = await response.json();
-    console.log("Fetch data successfully");
+    console.log("Fetch data successfully: ", jsonData);
     return Array.isArray(jsonData) ? jsonData : (jsonData.data ?? []);
   } catch (error) {
     console.error("Error while fetch Data ToDo:", error);

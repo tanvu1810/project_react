@@ -31,7 +31,6 @@ export default function HomePage() {
     try {
       const data = await addToDoItem(name);
       setList((prev) => [...prev, data]);
-      console.log(`Item ${name} added successfully.`);
     } catch (error) {
       console.error("Error add item: ", error);
     }

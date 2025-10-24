@@ -1,4 +1,4 @@
-import { normalizeId, type ToDo } from "../types/todos";
+import { getId, type ToDo } from "../types/todos";
 import ToDoItem from "./ToDoItem";
 type ToDoListProps = {
   items: ToDo[];
@@ -6,8 +6,8 @@ type ToDoListProps = {
   editText: string;
   onStartEdit(todo: ToDo): void;
   onChangeEditText(text: string): void;
-  onDeleteItem(id: string | number): void;
-  onUpdateItem(id: string | number): void;
+  onDeleteItem(id: string): void;
+  onUpdateItem(id: string): void;
   onCancelEdit(): void;
 };
 
@@ -28,11 +28,11 @@ export default function ToDoList({
   }
   return (
     <ul className="space-y-3">
-      {items.map((it) => (
+      {items.map((it, index) => (
         <ToDoItem
-          key={normalizeId(it.id)}
+          key={`${getId(it)}-${index}`}
           todo={it}
-          isEditing={normalizeId(editingId ?? "") === normalizeId(it.id)}
+          isEditing={String(editingId) === getId(it)}
           editText={editText}
           onStartEdit={onStartEdit}
           onChangeEditText={onChangeEditText}
