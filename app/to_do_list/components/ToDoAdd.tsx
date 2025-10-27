@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 
 // Dinh nghia kieu du lieu cua props onAdd cho components ToDoAdd
 type AddFormProps = {
@@ -8,7 +8,7 @@ type AddFormProps = {
 {
   /* Khu vực thêm việc cần làm */
 }
-export default function ToDoAdd({ onAdd }: AddFormProps) {
+const ToDoAdd = memo(function ToDoAdd({ onAdd }: AddFormProps) {
   const [item, setItem] = useState("");
   const handleAdd = async () => {
     const todoItem = item.trim();
@@ -16,6 +16,7 @@ export default function ToDoAdd({ onAdd }: AddFormProps) {
     await onAdd(todoItem);
     setItem("");
   };
+  console.log("Add to do item render");
 
   return (
     <div className="bg-white shadow-md rounded-xl p-6 w-full max-w-md mb-6">
@@ -40,4 +41,5 @@ export default function ToDoAdd({ onAdd }: AddFormProps) {
       </div>
     </div>
   );
-}
+});
+export default ToDoAdd;

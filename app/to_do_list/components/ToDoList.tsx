@@ -1,5 +1,6 @@
-import { getId, type ToDo } from "../types/todos";
+import { type ToDo } from "../types/todos";
 import ToDoItem from "./ToDoItem";
+import React from "react";
 type ToDoListProps = {
   items: ToDo[];
   editingId: string | number | null;
@@ -11,7 +12,7 @@ type ToDoListProps = {
   onCancelEdit(): void;
 };
 
-export default function ToDoList({
+const ToDoList = ({
   items,
   editingId,
   editText,
@@ -20,7 +21,7 @@ export default function ToDoList({
   onUpdateItem,
   onDeleteItem,
   onCancelEdit,
-}: ToDoListProps) {
+}: ToDoListProps) => {
   if (items.length === 0) {
     return (
       <p className="text-center text-gray-500 italic">Chưa có việc nào 😴</p>
@@ -28,11 +29,11 @@ export default function ToDoList({
   }
   return (
     <ul className="space-y-3">
-      {items.map((it, index) => (
+      {items.map((item) => (
         <ToDoItem
-          key={`${getId(it)}-${index}`}
-          todo={it}
-          isEditing={String(editingId) === getId(it)}
+          key={item.id}
+          todo={item}
+          isEditing={String(editingId) === item.id}
           editText={editText}
           onStartEdit={onStartEdit}
           onChangeEditText={onChangeEditText}
@@ -43,4 +44,6 @@ export default function ToDoList({
       ))}
     </ul>
   );
-}
+};
+
+export default React.memo(ToDoList);

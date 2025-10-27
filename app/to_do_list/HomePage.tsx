@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 import type { ToDo } from "./types/todos";
 
@@ -27,45 +27,50 @@ export default function HomePage() {
   }, []);
 
   // Add Item
-  const itemAdd = async (name: string) => {
+  const itemAdd = useCallback(async (name: string) => {
     try {
       const data = await addToDoItem(name);
       setList((prev) => [...prev, data]);
     } catch (error) {
       console.error("Error add item: ", error);
     }
-  };
+  }, []);
 
-  const handleStartEdit = (item: ToDo) => {
+  const handleStartEdit = useCallback((item: ToDo) => {
     setEditingId(item.id);
     setEditText(item.name ?? "");
-  };
+  }, []);
 
   // Huỷ sửa
-  const handleCancelEdit = () => {
+  const handleCancelEdit = useCallback(() => {
     setEditingId(null);
     setEditText("");
-  };
+  }, []);
 
   // Update Item
-  const itemUpdate = async (id: string) => {
-    const todoNew = editText.trim();
-    if (!todoNew) return;
-    try {
-      await updateToDoItem(id, todoNew);
-      setList((prev) =>
-        prev.map((item) => (item.id === id ? { ...item, name: todoNew } : item))
-      );
-      setEditingId(null);
-      setEditText("");
-    } catch (error) {
-      console.error("Update failed:", error);
-      alert("Sửa thất bại!");
-    }
-  };
+  const itemUpdate = useCallback(
+    async (id: string) => {
+      const todoNew = editText.trim();
+      if (!todoNew) return;
+      try {
+        await updateToDoItem(id, todoNew);
+        setList((prev) =>
+          prev.map((item) =>
+            item.id === id ? { ...item, name: todoNew } : item
+          )
+        );
+        setEditingId(null);
+        setEditText("");
+      } catch (error) {
+        console.error("Update failed:", error);
+        alert("Sửa thất bại!");
+      }
+    },
+    [editText]
+  );
 
   // Delete Item
-  const itemDelete = async (id: string) => {
+  const itemDelete = useCallback(async (id: string) => {
     try {
       await delToDoItem(id);
       setList((preList) => preList.filter((item) => item.id !== id));
@@ -73,8 +78,7 @@ export default function HomePage() {
       console.error("Error deleting item:", error);
       alert("Xoa that bai!");
     }
-  };
-
+  }, []);
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-purple-100 to-blue-100 p-4">
       <Header title="📝 ToDoList" />
