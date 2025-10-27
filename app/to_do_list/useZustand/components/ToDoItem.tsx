@@ -1,5 +1,5 @@
+import React from "react";
 import type { ToDo } from "../types/todos";
-
 type ToDoItemProps = {
   todo: ToDo;
   isEditing: boolean;
@@ -11,7 +11,7 @@ type ToDoItemProps = {
   onCancelEdit(): void;
 };
 
-export default function ToDoItem({
+const ToDoItem = ({
   todo,
   isEditing,
   editText,
@@ -20,7 +20,8 @@ export default function ToDoItem({
   onUpdateItem,
   onDeleteItem,
   onCancelEdit,
-}: ToDoItemProps) {
+}: ToDoItemProps) => {
+  console.log(`${todo.id}`);
   return (
     <li className="flex justify-between items-center bg-purple-50 px-4 py-2 rounded-lg shadow-sm hover:bg-purple-100 transition">
       <div
@@ -76,4 +77,5 @@ export default function ToDoItem({
       )}
     </li>
   );
-}
+};
+export default React.memo(ToDoItem);

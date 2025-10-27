@@ -22,6 +22,7 @@ const ToDoList = ({
   onDeleteItem,
   onCancelEdit,
 }: ToDoListProps) => {
+  console.log(`${items}`);
   if (items.length === 0) {
     return (
       <p className="text-center text-gray-500 italic">Chưa có việc nào 😴</p>
