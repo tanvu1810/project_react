@@ -49,12 +49,12 @@ export default function HomePage() {
 
   // Update Item
   const itemUpdate = async (id: string) => {
-    const next = editText.trim();
-    if (!next) return;
+    const todoNew = editText.trim();
+    if (!todoNew) return;
     try {
-      await updateToDoItem(id, next);
+      await updateToDoItem(id, todoNew);
       setList((prev) =>
-        prev.map((item) => (item.id === id ? { ...item, name: next } : item))
+        prev.map((item) => (item.id === id ? { ...item, name: todoNew } : item))
       );
       setEditingId(null);
       setEditText("");
