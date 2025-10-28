@@ -79,9 +79,11 @@ export default function HomePage() {
       alert("Xoa that bai!");
     }
   }, []);
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-purple-100 to-blue-100 p-4">
       <Header title="📝 ToDoList" />
+
       <ToDoAdd onAdd={itemAdd} />
 
       <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-md">
@@ -90,7 +92,7 @@ export default function HomePage() {
         </h3>
 
         <ToDoList
-          items={list}
+          list={list}
           editingId={editingId}
           editText={editText}
           onStartEdit={handleStartEdit}

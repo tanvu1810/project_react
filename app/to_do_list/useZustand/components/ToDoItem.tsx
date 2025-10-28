@@ -1,10 +1,10 @@
 import React from "react";
-import type { ToDo } from "../types/todos";
+import type { Todo } from "../types/todos";
 type ToDoItemProps = {
-  todo: ToDo;
+  todo: Todo;
   isEditing: boolean;
   editText: string;
-  onStartEdit(todo: ToDo): void;
+  onStartEdit(todo: Todo): void;
   onChangeEditText(text: string): void;
   onDeleteItem(id: string | number): void;
   onUpdateItem(id: string | number): void;

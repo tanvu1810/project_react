@@ -1,4 +1,4 @@
-import type { ToDo } from "../useprops/types/todos";
+import type { ToDo } from "../types/todos";
 
 const BASE_URL = "https://training-iota-azure.vercel.app/api/task";
 

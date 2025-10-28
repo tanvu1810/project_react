@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 
-import type { ToDo } from "./types/todos";
+import type { Todo } from "./types/todos";
 
 import Header from "./components/Headers";
 import ToDoAdd from "./components/ToDoAdd";
@@ -8,7 +8,7 @@ import ToDoList from "./components/ToDoList";
 import { fetchData, addToDoItem, updateToDoItem, delToDoItem } from "./api/api";
 
 export default function HomePage() {
-  const [list, setList] = useState<ToDo[]>([]);
+  const [list, setList] = useState<Todo[]>([]);
   const [editText, setEditText] = useState("");
   const [editingId, setEditingId] = useState<string | number | null>(null);
 
@@ -36,7 +36,7 @@ export default function HomePage() {
     }
   }, []);
 
-  const handleStartEdit = useCallback((item: ToDo) => {
+  const handleStartEdit = useCallback((item: Todo) => {
     setEditingId(item.id);
     setEditText(item.name ?? "");
   }, []);

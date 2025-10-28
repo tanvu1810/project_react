@@ -1,10 +1,10 @@
 import { type ToDo } from "../types/todos";
 import ToDoItem from "./ToDoItem";
-import React from "react";
+import { memo } from "react";
 type ToDoListProps = {
-  items: ToDo[];
+  list: ToDo[];
   editingId: string | number | null;
-  editText: string;
+  editText?: string;
   onStartEdit(todo: ToDo): void;
   onChangeEditText(text: string): void;
   onDeleteItem(id: string): void;
@@ -13,7 +13,7 @@ type ToDoListProps = {
 };
 
 const ToDoList = ({
-  items,
+  list,
   editingId,
   editText,
   onStartEdit,
@@ -22,29 +22,32 @@ const ToDoList = ({
   onDeleteItem,
   onCancelEdit,
 }: ToDoListProps) => {
-  console.log(`${items}`);
-  if (items.length === 0) {
+  console.log(`Object: ${list.length}`);
+  if (list.length === 0) {
     return (
       <p className="text-center text-gray-500 italic">Chưa có việc nào 😴</p>
     );
   }
   return (
     <ul className="space-y-3">
-      {items.map((item) => (
-        <ToDoItem
-          key={item.id}
-          todo={item}
-          isEditing={String(editingId) === item.id}
-          editText={editText}
-          onStartEdit={onStartEdit}
-          onChangeEditText={onChangeEditText}
-          onUpdateItem={onUpdateItem}
-          onCancelEdit={onCancelEdit}
-          onDeleteItem={onDeleteItem}
-        />
-      ))}
+      {list.map((item) => {
+        const isEditing = editingId === item.id;
+        return (
+          <ToDoItem
+            key={item.id}
+            item={item}
+            isEditing={isEditing}
+            editText={isEditing ? editText : undefined}
+            onStartEdit={onStartEdit}
+            onChangeEditText={onChangeEditText}
+            onUpdateItem={onUpdateItem}
+            onCancelEdit={onCancelEdit}
+            onDeleteItem={onDeleteItem}
+          />
+        );
+      })}
     </ul>
   );
 };
 
-export default React.memo(ToDoList);
+export default memo(ToDoList);

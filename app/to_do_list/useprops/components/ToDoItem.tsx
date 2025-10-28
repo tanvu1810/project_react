@@ -1,18 +1,18 @@
-import React from "react";
+import { memo } from "react";
 import type { ToDo } from "../types/todos";
 type ToDoItemProps = {
-  todo: ToDo;
+  item: ToDo;
   isEditing: boolean;
-  editText: string;
-  onStartEdit(todo: ToDo): void;
+  editText?: string;
+  onStartEdit(item: ToDo): void;
   onChangeEditText(text: string): void;
-  onDeleteItem(id: string | number): void;
-  onUpdateItem(id: string | number): void;
+  onDeleteItem(id: string): void;
+  onUpdateItem(id: string): void;
   onCancelEdit(): void;
 };
 
 const ToDoItem = ({
-  todo,
+  item,
   isEditing,
   editText,
   onStartEdit,
@@ -21,17 +21,17 @@ const ToDoItem = ({
   onDeleteItem,
   onCancelEdit,
 }: ToDoItemProps) => {
-  console.log(`${todo.id}`);
+  console.log(`Render item: ${item.id}`);
   return (
     <li className="flex justify-between items-center bg-purple-50 px-4 py-2 rounded-lg shadow-sm hover:bg-purple-100 transition">
       <div
         className="flex-1 mr-3 cursor-text"
-        onClick={() => !isEditing && onStartEdit(todo)}
+        onClick={() => !isEditing && onStartEdit(item)}
         title={!isEditing ? "Click để sửa" : ""}
       >
         <input
           type="text"
-          value={isEditing ? editText : (todo.name ?? "")}
+          value={isEditing ? editText : item.name}
           onChange={(e) => onChangeEditText(e.target.value)}
           disabled={!isEditing}
           readOnly={!isEditing}
@@ -43,7 +43,7 @@ const ToDoItem = ({
                 : "bg-transparent border border-transparent text-gray-800 font-medium pointer-events-none select-none"
             }`}
           onKeyDown={(e) => {
-            if (isEditing && e.key === "Enter") onUpdateItem(todo.id);
+            if (isEditing && e.key === "Enter") onUpdateItem(item.id);
             if (isEditing && e.key === "Escape") onCancelEdit();
           }}
         />
@@ -53,7 +53,7 @@ const ToDoItem = ({
         <div className="flex gap-2">
           <button
             type="button"
-            onClick={() => onUpdateItem(todo.id)}
+            onClick={() => onUpdateItem(item.id)}
             className="px-3 py-1 rounded-lg text-white font-semibold bg-green-500 hover:bg-green-600 transition"
           >
             Update
@@ -69,7 +69,7 @@ const ToDoItem = ({
       ) : (
         <button
           type="button"
-          onClick={() => onDeleteItem(todo.id)}
+          onClick={() => onDeleteItem(item.id)}
           className="px-3 py-1 rounded-lg text-white font-semibold bg-orange-500 hover:bg-orange-600 transition"
         >
           Delete
@@ -78,4 +78,4 @@ const ToDoItem = ({
     </li>
   );
 };
-export default React.memo(ToDoItem);
+export default memo(ToDoItem);
