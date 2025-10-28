@@ -1,27 +1,14 @@
 import { type ToDo } from "../types/todos";
 import ToDoItem from "./ToDoItem";
-import { memo } from "react";
+import React, { memo, useState, type SetStateAction } from "react";
 type ToDoListProps = {
   list: ToDo[];
-  editingId: string | number | null;
-  editText?: string;
-  onStartEdit(todo: ToDo): void;
-  onChangeEditText(text: string): void;
-  onDeleteItem(id: string): void;
-  onUpdateItem(id: string): void;
-  onCancelEdit(): void;
+  setList: React.Dispatch<React.SetStateAction<ToDo[]>>;
 };
 
-const ToDoList = ({
-  list,
-  editingId,
-  editText,
-  onStartEdit,
-  onChangeEditText,
-  onUpdateItem,
-  onDeleteItem,
-  onCancelEdit,
-}: ToDoListProps) => {
+const ToDoList = ({ list, setList }: ToDoListProps) => {
+  const [editingId, setEditingId] = useState<string | number | null>(null);
+
   console.log(`Object: ${list.length}`);
   if (list.length === 0) {
     return (
@@ -37,12 +24,8 @@ const ToDoList = ({
             key={item.id}
             item={item}
             isEditing={isEditing}
-            editText={isEditing ? editText : undefined}
-            onStartEdit={onStartEdit}
-            onChangeEditText={onChangeEditText}
-            onUpdateItem={onUpdateItem}
-            onCancelEdit={onCancelEdit}
-            onDeleteItem={onDeleteItem}
+            setEditingId={setEditingId}
+            setList={setList}
           />
         );
       })}

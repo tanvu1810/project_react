@@ -35,7 +35,7 @@ export const addToDoItem = async (name: string): Promise<ToDo> => {
     console.log(`Item ${name} added successfully`);
     return response.json();
   } catch (error) {
-    console.error(" Error while adding ToDo item:", error);
+    console.error("Error while adding ToDo item:", error);
     throw error;
   }
 };
@@ -56,7 +56,7 @@ export const updateToDoItem = async (
     }
     console.log(`Item ${id} updated successfully`);
   } catch (error) {
-    console.error(" Error while update ToDo item:", error);
+    console.error("Error while update ToDo item:", error);
     throw error;
   }
 };
@@ -72,7 +72,7 @@ export const delToDoItem = async (id: string): Promise<void> => {
     }
     console.log(`Item ${id} deleted successfully`);
   } catch (error) {
-    console.error(" Error while update ToDo item:", error);
+    console.error("Error while update ToDo item:", error);
     throw error;
   }
 };
