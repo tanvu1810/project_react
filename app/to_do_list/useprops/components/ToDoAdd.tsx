@@ -29,7 +29,7 @@ const ToDoAdd = memo(function ToDoAdd({ onAdd }: AddFormProps) {
           type="text"
           value={item}
           onChange={(elements) => setItem(elements.target.value)}
-          placeholder="Nhập việc cần làm..."
+          placeholder="Nhập việc zzcần làm..."
           className="flex-1 border-2 border-amber-400 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
         />
         <button
