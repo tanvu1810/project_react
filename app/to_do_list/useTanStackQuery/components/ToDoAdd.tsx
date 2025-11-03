@@ -8,7 +8,7 @@ type AddFormProps = {
 {
   /* Khu vực thêm việc cần làm */
 }
-const ToDoAdd = memo(function ToDoAdd({ onAdd }: AddFormProps) {
+const ToDoAdd = ({ onAdd }: AddFormProps) => {
   const [item, setItem] = useState("");
   const handleAdd = async () => {
     const todoItem = item.trim();
@@ -42,5 +42,5 @@ const ToDoAdd = memo(function ToDoAdd({ onAdd }: AddFormProps) {
       </div>
     </div>
   );
-});
-export default ToDoAdd;
+};
+export default memo(ToDoAdd);

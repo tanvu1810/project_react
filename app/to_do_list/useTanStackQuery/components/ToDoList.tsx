@@ -1,16 +1,23 @@
+import useTodos from "../hooks/useTodos";
 import { type ToDo } from "../types/todos";
 import ToDoItem from "./ToDoItem";
 import { memo, useState } from "react";
 
 type ToDoListProps = {
   list: ToDo[];
-  onUpdate(id: string, name: string): void | Promise<void>;
-  onDelete(id: string): Promise<void> | void;
 };
 
-const ToDoList = ({ list, onUpdate, onDelete }: ToDoListProps) => {
+const ToDoList = ({ list }: ToDoListProps) => {
+  const { updateItem, deleteItem } = useTodos();
   const [editingId, setEditingId] = useState<string | null>(null);
 
+  const handleUpdate = async (id: string, name: string) => {
+    await updateItem.mutateAsync({ id, name });
+  };
+  const handleDelete = async (id: string) => {
+    await deleteItem.mutateAsync(id);
+  };
+  
   console.log(`Object: ${list.length}`);
   if (list.length === 0) {
     return (
@@ -28,8 +35,8 @@ const ToDoList = ({ list, onUpdate, onDelete }: ToDoListProps) => {
             item={item}
             isEditing={isEditing}
             setEditingId={setEditingId}
-            onUpdate={onUpdate}
-            onDelete={onDelete}
+            onUpdate={handleUpdate}
+            onDelete={handleDelete}
           />
         );
       })}

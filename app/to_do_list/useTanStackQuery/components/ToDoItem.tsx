@@ -18,19 +18,16 @@ const ToDoItem = ({
 }: ToDoItemProps) => {
   const [editText, setEditText] = useState("");
 
-  const handleStartEdit = useCallback(
-    (item: ToDo) => {
-      setEditingId(item.id);
-      setEditText(item.name ?? "");
-    },
-    [item.id, item.name, setEditingId]
-  );
+  const handleStartEdit = useCallback((item: ToDo) => {
+    setEditingId(item.id);
+    setEditText(item.name ?? "");
+  }, []);
 
   // Huỷ sửa
   const handleCancelEdit = useCallback(() => {
     setEditingId(null);
     setEditText("");
-  }, [setEditingId]);
+  }, []);
 
   const handleConfirm = useCallback(async () => {
     const text = editText.trim();
@@ -38,7 +35,7 @@ const ToDoItem = ({
     await onUpdate(item.id, text);
     setEditingId(null);
     setEditText("");
-  }, [editText, item.id, onUpdate, setEditingId]);
+  }, [editText]);
 
   console.log(`Render item: ${item.id}`);
   return (
