@@ -1,20 +1,20 @@
 import { create } from "zustand";
-export interface Todo {
+export interface ToDo {
   id: string;
   name: string;
 }
 
 interface ToDoStore {
-  items: Todo[];
-  todo: Todo | null;
+  items: ToDo[];
+  todo: ToDo | null;
   editText: string;
   isEditing: boolean;
   // editingId: string | number | null;
   // setEditingId: (id: string) => void;
-  setTodo: (todo: Todo | null) => void;
+  setTodo: (todo: ToDo | null) => void;
   setIsEditing: (value: boolean) => void;
 
-  onStartEdit: (todo: Todo) => void;
+  onStartEdit: (todo: ToDo) => void;
   onChangeEditText: (text: string) => void;
   onDeleteItem: (id: string) => void;
   onUpdateItem: (id: string) => void;

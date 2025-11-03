@@ -1,11 +1,6 @@
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
-import { Test } from "../testUseState/test";
-import { Counter } from "../testUseEffect/test";
 
-import { App } from "~/to_do_list/base/app";
-import { Caculator } from "~/testRustand/app";
-import HomePage from "~/to_do_list/useprops/HomePage";
+import HomePage from "~/to_do_list/useTanStackQuery/HomePage";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -15,6 +10,14 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
+  // return (
+  //   <>
+  //     <QueryClientProvider client={queryClient}>
+  //       <App />
+  //     </QueryClientProvider>
+  //   </>
+  // );
+
   return (
     <>
       {/* <Welcome /> */}

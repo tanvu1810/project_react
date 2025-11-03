@@ -17,7 +17,7 @@ const ToDoAdd = memo(function ToDoAdd({ onAdd }: AddFormProps) {
     setItem("");
   };
 
-  console.log(`${item} render!`);
+  console.log(`${item}item added!`);
 
   return (
     <div className="bg-white shadow-md rounded-xl p-6 w-full max-w-md mb-6">
