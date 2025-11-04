@@ -12,6 +12,7 @@ const ToDoItem = ({ item, isEditing, setEditingId }: ToDoItemProps) => {
   const [editText, setEditText] = useState("");
 
   const { updateMutation, deleteMutation } = useTodos();
+
   const handleUpdate = useCallback(
     async (id: string, name: string) => {
       await updateMutation.mutateAsync({ id, name });

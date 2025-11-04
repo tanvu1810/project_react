@@ -2,10 +2,6 @@ import { memo } from "react";
 
 type HeaderProps = { title: string };
 
-{
-  /* Tiêu đề chính */
-}
-
 const Header = ({ title }: HeaderProps) => {
   console.log("Header render!");
   return (
@@ -14,4 +10,5 @@ const Header = ({ title }: HeaderProps) => {
     </h2>
   );
 };
+
 export default memo(Header);
