@@ -17,7 +17,7 @@ export default function Todos() {
   });
 
   // Add Item
-  const addItem = useMutation({
+  const addMutation = useMutation({
     mutationFn: (name: string) => addToDoItem(name),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
@@ -25,7 +25,7 @@ export default function Todos() {
   });
 
   // Update Item
-  const updateItem = useMutation({
+  const updateMutation = useMutation({
     mutationFn: ({ id, name }: { id: string; name: string }) =>
       updateToDoItem(id, name),
     onSuccess: () => {
@@ -34,12 +34,12 @@ export default function Todos() {
   });
 
   // Delete Item
-  const deleteItem = useMutation({
+  const deleteMutation = useMutation({
     mutationFn: (id: string) => delToDoItem(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
   });
 
-  return { todosQuery, addItem, updateItem, deleteItem };
+  return { todosQuery, addMutation, updateMutation, deleteMutation };
 }

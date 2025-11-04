@@ -3,12 +3,21 @@ import ToDoAdd from "./components/ToDoAdd";
 import ToDoList from "./components/ToDoList";
 import Title from "./components/Title";
 import useTodos from "./hooks/useTodos";
+import { useCallback } from "react";
 
 export default function HomePage() {
-  const { todosQuery, addItem, updateItem, deleteItem } = useTodos();
-  const handleAdd = async (name: string) => {
-    await addItem.mutateAsync(name);
-  };
+  const { todosQuery, addMutation, updateMutation, deleteMutation } =
+    useTodos();
+
+  // HomePage.tsx
+  const handleAdd = useCallback(
+    async (name: string) => {
+      await addMutation.mutateAsync(name);
+    },
+    [addMutation]
+  );
+
+
 
   const list = todosQuery.data ?? [];
   return (

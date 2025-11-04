@@ -1,22 +1,30 @@
 import React, { memo, useCallback, useState } from "react";
 import type { ToDo } from "../types/todos";
+import useTodos from "../hooks/useTodos";
 
 type ToDoItemProps = {
   item: ToDo;
   isEditing: boolean;
   setEditingId: React.Dispatch<React.SetStateAction<string | null>>;
-  onUpdate(id: string, name: string): void | Promise<void>;
-  onDelete(id: string): Promise<void> | void;
 };
 
-const ToDoItem = ({
-  item,
-  isEditing,
-  setEditingId,
-  onUpdate,
-  onDelete,
-}: ToDoItemProps) => {
+const ToDoItem = ({ item, isEditing, setEditingId }: ToDoItemProps) => {
   const [editText, setEditText] = useState("");
+
+  const { updateMutation, deleteMutation } = useTodos();
+  const handleUpdate = useCallback(
+    async (id: string, name: string) => {
+      await updateMutation.mutateAsync({ id, name });
+    },
+    [updateMutation]
+  );
+
+  const handleDelete = useCallback(
+    async (id: string) => {
+      await deleteMutation.mutateAsync(id);
+    },
+    [deleteMutation]
+  );
 
   const handleStartEdit = useCallback((item: ToDo) => {
     setEditingId(item.id);
@@ -32,7 +40,7 @@ const ToDoItem = ({
   const handleConfirm = useCallback(async () => {
     const text = editText.trim();
     if (!text) return;
-    await onUpdate(item.id, text);
+    await handleUpdate(item.id, text);
     setEditingId(null);
     setEditText("");
   }, [editText]);
@@ -85,7 +93,7 @@ const ToDoItem = ({
       ) : (
         <button
           type="button"
-          onClick={() => onDelete(item.id)}
+          onClick={() => handleDelete(item.id)}
           className="px-3 py-1 rounded-lg text-white font-semibold bg-orange-500 hover:bg-orange-600 transition"
         >
           Delete
