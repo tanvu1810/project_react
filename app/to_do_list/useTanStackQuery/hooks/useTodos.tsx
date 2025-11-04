@@ -13,7 +13,9 @@ export default function Todos() {
 
     // initialData:
     queryFn: fetchData,
-    gcTime: 1000 * 60 * 1,
+    staleTime: 60_000,
+    gcTime: 500_000,
+    refetchOnWindowFocus: true,
   });
 
   // Add Item

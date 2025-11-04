@@ -6,18 +6,13 @@ import useTodos from "./hooks/useTodos";
 import { useCallback } from "react";
 
 export default function HomePage() {
-  const { todosQuery, addMutation, updateMutation, deleteMutation } =
-    useTodos();
-
-  // HomePage.tsx
+  const { todosQuery, addMutation } = useTodos();
   const handleAdd = useCallback(
     async (name: string) => {
       await addMutation.mutateAsync(name);
     },
     [addMutation]
   );
-
-
 
   const list = todosQuery.data ?? [];
   return (
@@ -28,7 +23,7 @@ export default function HomePage() {
 
       <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-md">
         <Title paragraph="Danh sách công việc 📋" />
-        {todosQuery.isLoading ? (
+        {todosQuery.isPending ? (
           <p>Loading...</p>
         ) : todosQuery.isError ? (
           <p className="text-red-500">
