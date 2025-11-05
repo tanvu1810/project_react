@@ -5,12 +5,12 @@ import {
   fetchData,
   updateToDoItem,
 } from "../api/api";
+
 export default function Todos() {
   const queryClient = useQueryClient();
-  // Doc du lieu
+
   const todosQuery = useQuery({
     queryKey: ["todos"],
-
     // initialData:
     queryFn: fetchData,
     staleTime: 60_000,

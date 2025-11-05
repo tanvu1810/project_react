@@ -9,7 +9,14 @@ export default function HomePage() {
   const { todosQuery, addMutation } = useTodos();
   const handleAdd = useCallback(
     async (name: string) => {
-      await addMutation.mutateAsync(name);
+      console.log("[HomePage] handleAdd ->", name);
+      try {
+        const res = await addMutation.mutateAsync(name);
+        console.log("[HomePage] mutate result ->", res);
+      } catch (e) {
+        console.error("[HomePage] add failed:", e);
+        alert(String(e));
+      }
     },
     [addMutation]
   );
